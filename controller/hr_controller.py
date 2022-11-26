@@ -30,12 +30,26 @@ def next_birthdays():
     view.print_error_message("Not implemented yet.")
 
 
-def count_employees_with_clearance():
-    view.print_error_message("Not implemented yet.")
+def count_employees_with_clearance():  # this
+    hr_db = hr.data_manager.read_table_from_file(hr.DATAFILE)
+    clearance_count = {}
+    for record in hr_db:
+        try:
+            clearance_count[record[4]] += 1
+        except KeyError:
+            clearance_count.update({record[4]: 1})
+    return clearance_count
 
 
-def count_employees_per_department():
-    view.print_error_message("Not implemented yet.")
+def count_employees_per_department():  # this
+    hr_db = hr.data_manager.read_table_from_file(hr.DATAFILE)
+    department_count = {}
+    for record in hr_db:
+        try:
+            department_count[record[3]] += 1
+        except KeyError:
+            department_count.update({record[3]: 1})
+    return department_count
 
 
 def run_operation(option):
