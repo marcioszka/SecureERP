@@ -1,5 +1,6 @@
 from model.sales import sales
 from view import terminal as view
+from datetime import date, timedelta
 
 
 def list_transactions():
@@ -52,8 +53,24 @@ def count_transactions_between():
     view.print_error_message("Not implemented yet.")
 
 
-def sum_transactions_between():
-    view.print_error_message("Not implemented yet.")
+def sum_transactions_between(date_from, date_to):
+    def dates_between(start_date, end_date):
+        dates_list = []
+        for iso_date in range(int((end_date - start_date).days)+1):
+            day = start_date + timedelta(iso_date)
+            dates_list.append(day.strftime('%Y-%m-%d'))
+        return dates_list
+    sales_db = sales.data_manager.read_table_from_file(sales.DATAFILE)
+    year_from, month_from, day_from = date_from.split("-")
+    year_to, month_to, day_to = date_to.split("-")
+    from_date = date(int(year_from), int(month_from), int(day_from))
+    to_date = date(int(year_to), int(month_to), int(day_to))
+    dates = dates_between(from_date, to_date)
+    transaction_sum = 0.0
+    for transaction in sales_db:
+        if transaction[4] in dates:
+            transaction_sum += float(transaction[3])
+    return transaction_sum
 
 
 def run_operation(option):
