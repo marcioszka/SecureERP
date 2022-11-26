@@ -19,11 +19,33 @@ def delete_transaction():
 
 
 def get_biggest_revenue_transaction():
-    view.print_error_message("Not implemented yet.")
+    sales_db = sales.data_manager.read_table_from_file(sales.DATAFILE)
+    data = {}
+    largest_transaction = 0.0
+    for transaction in sales_db:
+        if float(transaction[3]) > largest_transaction:
+            i = 0
+            largest_transaction = float(transaction[3])
+            for item in transaction:
+                data.update({sales.HEADERS[i]: item})
+                i += 1
+    return data
 
 
 def get_biggest_revenue_product():
-    view.print_error_message("Not implemented yet.")
+    sales_db = sales.data_manager.read_table_from_file(sales.DATAFILE)
+    data = {}
+    item_name = ""
+    sales_sum = 0.0
+    for transaction in sales_db:
+        try:
+            data[transaction[2]] += float(transaction[3])
+        except KeyError:
+            data.update({transaction[2]: float(transaction[3])})
+    for key, value in data.items():
+        if float(value) > sales_sum:
+            item_name, sales_sum = key, float(value)
+    return {item_name: sales_sum}
 
 
 def count_transactions_between():
