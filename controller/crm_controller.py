@@ -3,11 +3,16 @@ from view import terminal as view
 
 
 def list_customers():
-    view.print_error_message("Not implemented yet.")
+    crm_db = crm.data_manager.read_table_from_file(crm.DATAFILE)
+    view.print_table(crm_db)
 
 
 def add_customer():
-    view.print_error_message("Not implemented yet.")
+    crm_db = crm.data_manager.read_table_from_file(crm.DATAFILE)
+    user_input = view.get_inputs(crm.HEADERS)
+    crm_db.append(user_input)
+    crm.data_manager.write_table_to_file("crm.csv", crm_db)
+    view.print_message(f"Customer {user_input[0]} added to database!")
 
 
 def update_customer():
@@ -15,11 +20,26 @@ def update_customer():
 
 
 def delete_customer():
-    view.print_error_message("Not implemented yet.")
+    crm_db = crm.data_manager.read_table_from_file(crm.DATAFILE)
+    delete_id = view.get_input("Select ID of customer to remove")
+    for record in crm_db:
+        if delete_id in record[0]:
+            crm_db.remove(record)
+            crm.data_manager.write_table_to_file(crm.DATAFILE, crm_db)
+            view.print_message(
+                f"Customer with ID {delete_id} has been removed!")
+            return
+    view.print_error_message(
+        f"Customer with ID {delete_id} was not found!")
 
 
 def get_subscribed_emails():
-    view.print_error_message("Not implemented yet.")
+    crm_db = crm.data_manager.read_table_from_file(crm.DATAFILE)
+    email_list = []
+    for client in crm_db:
+        if client[3] == "1":
+            email_list.append(client[2])
+    view.print_general_results(email_list, "Emails subscribed to newsletter:")
 
 
 def run_operation(option):
