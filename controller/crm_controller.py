@@ -4,7 +4,7 @@ from view import terminal as view
 
 def list_customers():
     crm_db = crm.data_manager.read_table_from_file(crm.DATAFILE)
-    view.print_table(crm_db)
+    view.print_table(crm_db, crm.HEADERS)
 
 
 def add_customer():
