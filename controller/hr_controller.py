@@ -38,7 +38,8 @@ def count_employees_with_clearance():  # this
             clearance_count[record[4]] += 1
         except KeyError:
             clearance_count.update({record[4]: 1})
-    return clearance_count
+    view.print_general_results(
+        clearance_count, "Employees with clearance level:")
 
 
 def count_employees_per_department():  # this
@@ -49,7 +50,8 @@ def count_employees_per_department():  # this
             department_count[record[3]] += 1
         except KeyError:
             department_count.update({record[3]: 1})
-    return department_count
+    view.print_general_results(
+        department_count, "Employees in departments:")
 
 
 def run_operation(option):
