@@ -23,7 +23,7 @@ def get_biggest_revenue_transaction():
     sales_db = sales.data_manager.read_table_from_file(sales.DATAFILE)
     data = {}
     largest_transaction = 0.0
-    data_list = []
+    data_list = [[]]
     for transaction in sales_db:
         if float(transaction[3]) > largest_transaction:
             i = 0
@@ -32,8 +32,8 @@ def get_biggest_revenue_transaction():
                 data.update({sales.HEADERS[i]: item})
                 i += 1
     for value in data.values():
-        data_list.append(value)
-    view.print_table(data_list)
+        data_list[0].append(value)
+    view.print_table(data_list, sales.HEADERS)
 
 
 def get_biggest_revenue_product():
