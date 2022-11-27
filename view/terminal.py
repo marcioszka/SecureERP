@@ -43,14 +43,42 @@ def print_general_results(result, label):
 # |   0    |  Bazooka   | portable |
 # |--------|------------|----------|
 # |   1    | Sidewinder | missile  |
-# \-----------------------------------/
-def print_table(table):
-    """Prints tabular data like above.
-
-    Args:
-        table: list of lists - the table to print out
-    """
-    pass
+# \--------------------------------/
+def print_table(table, headers):
+    row_length = 0
+    longest_string = []
+    for _ in headers:
+        longest_string.append("")
+    for person in table:
+        i = 0
+        for item in person:
+            temp_string = f"{' ':<2}{item}{' ':>2}"
+            if len(temp_string) > len(longest_string[i]):
+                longest_string[i] = temp_string
+            i += 1
+    row_length = len(''.join(longest_string)) + 3
+    print(f"/{'-' * row_length}\\")
+    for person in table:
+        print("|", end="")
+        i = 0
+        for item in person:
+            indent_length = len(longest_string[i]) - len(item) - 1
+            indent = 0
+            if (indent_length/2) % 2 == 0:
+                indent = int(indent_length/2)
+                print(
+                    f"{'':<{indent}}{item}{'':>{indent+1}}", end="")
+            else:
+                indent = int((indent_length + 1)/2)
+                print(
+                    f"{'':<{indent}}{item}{'':>{indent}}", end="")
+            print("|", end="")
+            i += 1
+            print()
+            if person != table[-1]:
+                print(f"|{'-' * row_length}|")
+            else:
+                print(f"\\{'-' * row_length}/")
 
 
 def get_input(label):
