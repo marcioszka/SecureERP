@@ -23,6 +23,7 @@ def get_biggest_revenue_transaction():
     sales_db = sales.data_manager.read_table_from_file(sales.DATAFILE)
     data = {}
     largest_transaction = 0.0
+    data_list = []
     for transaction in sales_db:
         if float(transaction[3]) > largest_transaction:
             i = 0
@@ -30,7 +31,9 @@ def get_biggest_revenue_transaction():
             for item in transaction:
                 data.update({sales.HEADERS[i]: item})
                 i += 1
-    return data
+    for value in data.values():
+        data_list.append(value)
+    view.print_table(data_list)
 
 
 def get_biggest_revenue_product():
@@ -46,7 +49,8 @@ def get_biggest_revenue_product():
     for key, value in data.items():
         if float(value) > sales_sum:
             item_name, sales_sum = key, float(value)
-    return {item_name: sales_sum}
+    view.print_general_results(
+        {item_name: sales_sum}, "Product that made the highest revenue overall:")
 
 
 def count_transactions_between():
@@ -70,7 +74,8 @@ def sum_transactions_between(date_from, date_to):
     for transaction in sales_db:
         if transaction[4] in dates:
             transaction_sum += float(transaction[3])
-    return transaction_sum
+    view.print_general_results(
+        transaction_sum, f"Sum of transactions between {date_from} - {date_to}")
 
 
 def run_operation(option):
