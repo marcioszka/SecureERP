@@ -47,6 +47,7 @@ def print_general_results(result, label):
 def print_table(table, headers):
     row_length = 0
     longest_string = []
+    table.insert(0, headers)
     for _ in headers:
         longest_string.append("")
     for person in table:
