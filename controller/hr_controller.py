@@ -35,12 +35,12 @@ def next_birthdays():
     user_date = view.get_input(
         "Input a date in format YYYY-MM-DD or leave blank  for today:")
     if len(user_date) == 10:
-        date_from = date(*[user_date.split("-")])
+        date_from = date(*(int(num) for num in user_date.split("-")))
     for num in range(14):
         dates.insert(num, (date_from + timedelta(num)))
     for person in hr_db:
-        if person[2] in dates:
-            birthdays.append(person)
+        if person[2][4:] in dates[4:]:
+            birthdays.append([person])
     view.print_table(birthdays, hr.HEADERS)
 
 
