@@ -67,7 +67,19 @@ def get_biggest_revenue_product():
 
 
 def count_transactions_between():
-    view.print_error_message("Not implemented yet.")
+    starting_date = view.get_input("Enter a starting date in YYYY-MM-DD format with which database is searched.")
+    ending_date = view.get_input("Enter an ending date in YYYY-MM-DD format with which database is searched.")
+    transaction_counter = 0
+    sales_database = sales.data_manager.read_table_from_file(sales.DATAFILE)
+    for data in sales_database:
+        if data[4] > starting_date and data[4] < ending_date:
+            transaction_counter += 1
+    if transaction_counter == 0:
+        view.print_message(f"There have been no transactions between {starting_date} and {ending_date}.")
+    elif transaction_counter == 1:
+        view.print_message(f"There has been {transaction_counter} transaction between {starting_date} and {ending_date}.")
+    else:
+        view.print_message(f"There have been {transaction_counter} transactions between {starting_date} and {ending_date}.")
 
 
 def sum_transactions_between():
