@@ -11,7 +11,7 @@ def add_customer():
     crm_db = crm.data_manager.read_table_from_file(crm.DATAFILE)
     user_input = view.get_inputs(crm.HEADERS)
     crm_db.append(user_input)
-    crm.data_manager.write_table_to_file("crm.csv", crm_db)
+    crm.data_manager.write_table_to_file(crm.DATAFILE, crm_db)
     view.print_message(f"Customer {user_input[0]} added to database!")
 
 
