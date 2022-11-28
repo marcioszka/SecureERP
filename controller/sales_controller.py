@@ -4,8 +4,10 @@ from datetime import date, timedelta
 
 
 def list_transactions():
-    view.print_error_message("Not implemented yet.")
+    sales_database = sales.data_manager.read_table_from_file(sales.DATAFILE)
+    view.print_table(sales_database)
 
+list_transactions()
 
 def add_transaction():
     view.print_error_message("Not implemented yet.")
