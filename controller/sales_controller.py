@@ -7,10 +7,13 @@ def list_transactions():
     sales_database = sales.data_manager.read_table_from_file(sales.DATAFILE)
     view.print_table(sales_database)
 
-list_transactions()
 
 def add_transaction():
-    view.print_error_message("Not implemented yet.")
+    sales_database = sales.data_manager.read_table_from_file(sales.DATAFILE)
+    new_transaction = view.get_inputs(sales.HEADERS)
+    sales_database.append(new_transaction)
+    sales.data_manager.write_table_to_file("sales.csv", sales_database)
+    view.print_message(f"Transaction {new_transaction[0]} added to database!")
 
 
 def update_transaction():
