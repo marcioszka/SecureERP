@@ -12,7 +12,7 @@ def add_transaction():
     sales_database = sales.data_manager.read_table_from_file(sales.DATAFILE)
     new_transaction = view.get_inputs(sales.HEADERS)
     sales_database.append(new_transaction)
-    sales.data_manager.write_table_to_file("sales.csv", sales_database)
+    sales.data_manager.write_table_to_file(sales.DATAFILE, sales_database)
     view.print_message(f"Transaction {new_transaction[0]} added to database!")
 
 
