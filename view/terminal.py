@@ -56,29 +56,29 @@ def print_table(table, headers):
             if len(temp_string) > len(longest_string[i]):
                 longest_string[i] = temp_string
             i += 1
-    row_length = len(''.join(longest_string)) + 3
-    print(f"/{'-' * row_length}\\")
+    row_length = len('  '.join(longest_string)) + 1
+    print(f"/{'-' * (row_length)}\\")
     for person in table:
         print("|", end="")
         i = 0
         for item in person:
-            indent_length = len(longest_string[i]) - len(item) - 1
-            indent = 0
-            if (indent_length/2) % 2 == 0:
-                indent = int(indent_length/2)
+            column_width = len(longest_string[i]) - len(item)
+            if (column_width) % 2 == 0:
+                width = column_width / 2
                 print(
-                    f"{'':<{indent}}{item}{'':>{indent+1}}", end="")
+                    f"{'':<{width}}{item}{'':>{width + 1}}", end="")
             else:
-                indent = int((indent_length + 1)/2)
+                width = column_width / 2 + 0.5
                 print(
-                    f"{'':<{indent}}{item}{'':>{indent}}", end="")
+                    f"{'':<{width}}{item}{'':>{width}}", end="")
             print("|", end="")
             i += 1
-            print()
-            if person != table[-1]:
-                print(f"|{'-' * row_length}|")
-            else:
-                print(f"\\{'-' * row_length}/")
+
+        print()
+        if person != table[-1]:
+            print(f"|{'-' * (row_length)}|")
+        else:
+            print(f"\\{'-' * (row_length)}/")
 
 
 def get_input(label):
