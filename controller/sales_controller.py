@@ -72,7 +72,7 @@ def count_transactions_between():
     transaction_counter = 0
     sales_database = sales.data_manager.read_table_from_file(sales.DATAFILE)
     for data in sales_database:
-        if data[4] > starting_date and data[4] < ending_date:
+        if data[4] >= starting_date and data[4] <= ending_date:
             transaction_counter += 1
     if transaction_counter == 0:
         view.print_message(f"There have been no transactions between {starting_date} and {ending_date}.")
