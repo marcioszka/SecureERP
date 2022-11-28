@@ -17,7 +17,21 @@ def add_transaction():
 
 
 def update_transaction():
-    view.print_error_message("Not implemented yet.")
+    sales_database = sales.data_manager.read_table_from_file(sales.DATAFILE)
+    id_transaction_to_update = view.get_input("Select ID of a transaction to update")
+    updated_sales = []
+    for data in sales_database:
+        if data[0] == id_transaction_to_update:
+            index = 0
+            for _ in data:
+                updated_detail = view.get_inputs(sales.HEADERS[index])
+                updated_data.append(updated_detail)
+                index +=1
+        else:
+            updated_data = data
+        updated_sales.append(updated_data)
+    sales.data_manager.write_table_to_file(sales.DATAFILE, updated_sales)
+    view.print_message(f"Transaction {id_transaction_to_update} has been updated.")
 
 
 def delete_transaction():
