@@ -33,7 +33,7 @@ def next_birthdays():
     dates = []
     date_from = date.today()
     user_date = view.get_input(
-        "Input a date in format YYYY-MM-DD or leave blank for today:")
+        "Input a date in format YYYY-MM-DD or leave blank  for today:")
     if len(user_date) == 10:
         date_from = date(*[user_date.split("-")])
     for num in range(14):
