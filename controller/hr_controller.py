@@ -1,5 +1,6 @@
 from model.hr import hr
 from view import terminal as view
+from datetime import timedelta, date
 
 
 def list_employees():
@@ -27,10 +28,23 @@ def get_average_age():
 
 
 def next_birthdays():
-    view.print_error_message("Not implemented yet.")
+    hr_db = hr.data_manager.read_table_from_file(hr.DATAFILE)
+    birthdays = []
+    dates = []
+    date_from = date.today()
+    user_date = view.get_input(
+        "Input a date in format YYYY-MM-DD or leave blank for today:")
+    if len(user_date) == 10:
+        date_from = date(*[user_date.split("-")])
+    for num in range(14):
+        dates.insert(num, (date_from + timedelta(num)))
+    for person in hr_db:
+        if person[2] in dates:
+            birthdays.append(person)
+    view.print_table(birthdays, hr.HEADERS)
 
 
-def count_employees_with_clearance():  # this
+def count_employees_with_clearance():
     hr_db = hr.data_manager.read_table_from_file(hr.DATAFILE)
     clearance_count = {}
     for record in hr_db:
@@ -42,7 +56,7 @@ def count_employees_with_clearance():  # this
         clearance_count, "Employees with clearance level:")
 
 
-def count_employees_per_department():  # this
+def count_employees_per_department():
     hr_db = hr.data_manager.read_table_from_file(hr.DATAFILE)
     department_count = {}
     for record in hr_db:
