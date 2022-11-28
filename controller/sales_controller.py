@@ -62,7 +62,10 @@ def count_transactions_between():
     view.print_error_message("Not implemented yet.")
 
 
-def sum_transactions_between(date_from, date_to):
+def sum_transactions_between():
+    start_date = view.get_input("Start date in format YYYY-MM-DD:")
+    end_date = view.get_input("End date in format YYYY-MM-DD:")
+
     def dates_between(start_date, end_date):
         dates_list = []
         for iso_date in range(int((end_date - start_date).days)+1):
@@ -70,8 +73,8 @@ def sum_transactions_between(date_from, date_to):
             dates_list.append(day.strftime('%Y-%m-%d'))
         return dates_list
     sales_db = sales.data_manager.read_table_from_file(sales.DATAFILE)
-    year_from, month_from, day_from = date_from.split("-")
-    year_to, month_to, day_to = date_to.split("-")
+    year_from, month_from, day_from = start_date.split("-")
+    year_to, month_to, day_to = end_date.split("-")
     from_date = date(int(year_from), int(month_from), int(day_from))
     to_date = date(int(year_to), int(month_to), int(day_to))
     dates = dates_between(from_date, to_date)
@@ -80,7 +83,7 @@ def sum_transactions_between(date_from, date_to):
         if transaction[4] in dates:
             transaction_sum += float(transaction[3])
     view.print_general_results(
-        transaction_sum, f"Sum of transactions between {date_from} - {date_to}")
+        transaction_sum, f"Sum of transactions between {start_date} - {end_date}")
 
 
 def run_operation(option):
