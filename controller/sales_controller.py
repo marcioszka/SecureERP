@@ -5,7 +5,7 @@ from datetime import date, timedelta
 
 def list_transactions():
     sales_database = sales.data_manager.read_table_from_file(sales.DATAFILE)
-    view.print_table(sales_database)
+    view.print_table(sales_database, sales.HEADERS)
 
 
 def add_transaction():
@@ -21,7 +21,15 @@ def update_transaction():
 
 
 def delete_transaction():
-    view.print_error_message("Not implemented yet.")
+    sales_database = sales.data_manager.read_table_from_file(sales.DATAFILE)
+    deleted_transaction = view.get_input("Select ID of a transaction to delete")
+    for data in sales_database:
+        if deleted_transaction in data[0]:
+            sales.remove(data)
+            sales.data_manager.write_table_to_file(sales.DATAFILE, sales_database)
+            view.print_message(f"Transaction {deleted_transaction} deleted from database.")
+        else:
+            return view.print_error_message(f"Transaction {deleted_transaction} is not listed in a database.")
 
 
 def get_biggest_revenue_transaction():
