@@ -22,11 +22,8 @@ def update_transaction():
     updated_sales = []
     for data in sales_database:
         if data[0] == id_transaction_to_update:
-            index = 0
-            for _ in data:
-                updated_detail = view.get_inputs(sales.HEADERS[index])
-                updated_data.append(updated_detail)
-                index +=1
+            updated_detail = view.get_inputs(sales.HEADERS)
+            updated_data = updated_detail
         else:
             updated_data = data
         updated_sales.append(updated_data)
