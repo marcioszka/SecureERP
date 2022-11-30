@@ -4,27 +4,66 @@ from datetime import timedelta, date
 
 
 def list_employees():
-    view.print_error_message("Not implemented yet.")
-
-
+    ### view.print_error_message("Not implemented yet.")
+    person=hr.read_from_file()
+    view.print_table(person)
+    
 def add_employee():
-    view.print_error_message("Not implemented yet.")
+    ### view.print_error_message("Not implemented yet.")
+    id = view.get_input("Please provide the ID: ")
+    person = view.get_input("Please provide the name: ")
+    birthdays = view.get_input("Please provide birthday date: ")
+    department = view.get_input("Please provide the department: ")
+    clearance = view.get_input("Please provide the clearance: ")
 
+    hr.create_file(id,person,birthdays,department,clearance)
 
 def update_employee():
-    view.print_error_message("Not implemented yet.")
+    ### view.print_error_message("Not implemented yet.")
+    id = view.get_input("Please provide the ID: ")
+    person = view.get_input("Please provide the name: ")
+    birthdays = view.get_input("Please provide birthday date: ")
+    department = view.get_input("Please provide the department: ")
+    clearance = view.get_input("Please provide the clearance: ")
 
+    hr.update_file(id,person,birthdays,department,clearance)
 
 def delete_employee():
-    view.print_error_message("Not implemented yet.")
+    ### view.print_error_message("Not implemented yet.")
+    id = view.get_input("Please provide ID to remove permanently: ")
+    hr.delete_from_file(id)
 
 
 def get_oldest_and_youngest():
-    view.print_error_message("Not implemented yet.")
+    hr_database = hr.data_manager.read_table_from_file(hr.DATAFILE)
+    birthday_of_youngest, birthday_of_oldest = hr_database[0][2], hr_database[0][2]
+    oldest_employee_name, youngest_employee_name = hr_database[0][1], hr_database[0][1]
+    for data in hr_database:
+        if data[2] < birthday_of_oldest:
+            birthday_of_oldest = data[2]
+            oldest_employee_name = data[1]
+        if data[2] > birthday_of_youngest:
+            birthday_of_youngest = data[2]
+            youngest_employee_name = data[1]
+    oldest_and_youngest = oldest_employee_name, youngest_employee_name
+    view.print_message(f"Oldest and youngest employees are respectively {', '.join(oldest_and_youngest)}.")
+
 
 
 def get_average_age():
-    view.print_error_message("Not implemented yet.")
+    hr_db = hr.data_manager.read_table_from_file(hr.DATAFILE)
+    ages = []
+    today = date.today()
+    for person in hr_db:
+        birth_date = date.fromisoformat(person[2])
+        years = today.year - birth_date.year
+        if all((x >= y) for x, y in zip(today.timetuple(),
+                                        birth_date.timetuple())):
+            ages.append(years)
+        else:
+            ages.append(years - 1)
+    view.print_general_results(
+        int(sum(ages) / len(ages)), "Average employee age:")
 
 
 def next_birthdays():
@@ -33,7 +72,7 @@ def next_birthdays():
     dates = []
     date_from = date.today()
     user_date = view.get_input(
-        "Input a date in format YYYY-MM-DD or leave blank  for today:")
+        "Input a date in format YYYY-MM-DD or leave blank for today:")
     if len(user_date) == 10:
         date_from = date.fromisoformat(user_date)
     for num in range(14):
