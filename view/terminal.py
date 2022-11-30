@@ -5,6 +5,7 @@ def print_menu(title, list_options):
         print(f"({i}) {option}")
         i += 1
     print(f"(0) {list_options[0]}")
+    print()
 
 
 def print_message(message):
@@ -88,4 +89,4 @@ def get_inputs(labels):
 
 
 def print_error_message(message):
-    print(f"Error: {message}")
+    print(f"Error: {message}\n")
