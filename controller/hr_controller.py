@@ -24,7 +24,19 @@ def get_oldest_and_youngest():
 
 
 def get_average_age():
-    view.print_error_message("Not implemented yet.")
+    hr_db = hr.data_manager.read_table_from_file(hr.DATAFILE)
+    ages = []
+    today = date.today()
+    for person in hr_db:
+        birth_date = date.fromisoformat(person[2])
+        years = today.year - birth_date.year
+        if all((x >= y) for x, y in zip(today.timetuple(),
+                                        birth_date.timetuple())):
+            ages.append(years)
+        else:
+            ages.append(years - 1)
+    view.print_general_results(
+        int(sum(ages) / len(ages)), "Average employee age:")
 
 
 def next_birthdays():
@@ -33,7 +45,7 @@ def next_birthdays():
     dates = []
     date_from = date.today()
     user_date = view.get_input(
-        "Input a date in format YYYY-MM-DD or leave blank  for today:")
+        "Input a date in format YYYY-MM-DD or leave blank for today:")
     if len(user_date) == 10:
         date_from = date.fromisoformat(user_date)
     for num in range(14):
