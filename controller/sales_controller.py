@@ -114,7 +114,7 @@ def sum_transactions_between():
         if transaction[4] in dates:
             transaction_sum += float(transaction[3])
     view.print_general_results(
-        transaction_sum, f"Sum of transactions between {start_date} - {end_date}")
+        transaction_sum, f"Sum of transactions between {start_date} - {end_date}:")
 
 
 def run_operation(option):
