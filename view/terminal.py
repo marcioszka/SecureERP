@@ -20,12 +20,7 @@ def print_menu(title, list_options):
 
 
 def print_message(message):
-    """Prints a single message to the terminal.
-
-    Args:
-        message: str - the message
-    """
-    pass
+    print(message)
 
 
 def print_general_results(result, label):
