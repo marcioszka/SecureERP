@@ -23,6 +23,7 @@ def add_customer():
 
 
 def update_customer():
+    # Replaces whole database with single person
     crm_database = crm.data_manager.read_table_from_file(crm.DATAFILE)
     id_customer_to_update = view.get_input(
         "Select an ID of a customer to update.")
@@ -40,6 +41,7 @@ def update_customer():
 
 
 def delete_customer():
+    # Doesn't find id
     crm_db = crm.data_manager.read_table_from_file(crm.DATAFILE)
     view.print_table(crm_db, crm.HEADERS)
     delete_id = view.get_input("Select ID of customer to remove")

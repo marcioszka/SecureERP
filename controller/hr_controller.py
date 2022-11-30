@@ -4,21 +4,26 @@ from datetime import timedelta, date
 
 
 def list_employees():
-    person = hr.read_from_file()
+    # Crashes app
+    person = hr.read_from_file()  # wrong function call location
     view.print_table(person)
 
 
 def add_employee():
-    id = view.get_input("Please provide the ID: ")
+    # Crashes app
+    # Unique ID should be generated from sales.util.generate_id
+    unique_id = view.get_input("Please provide the ID: ")
     person = view.get_input("Please provide the name: ")
     birthdays = view.get_input("Please provide birthday date: ")
     department = view.get_input("Please provide the department: ")
     clearance = view.get_input("Please provide the clearance: ")
-    hr.create_file(id, person, birthdays, department, clearance)
+    hr.create_file(unique_id, person, birthdays, department, clearance)
 
 
 def update_employee():
-    id = view.get_input("Please provide the ID: ")
+    # Crashes app
+    # Unique ID should be generated from sales.util.generate_id
+    id = view.get_inputs("Please provide the ID: ")
     person = view.get_input("Please provide the name: ")
     birthdays = view.get_input("Please provide birthday date: ")
     department = view.get_input("Please provide the department: ")
@@ -27,6 +32,8 @@ def update_employee():
 
 
 def delete_employee():
+    # Crashes app
+    # Unique ID should be generated from sales.util.generate_id
     id = view.get_input("Please provide ID to remove permanently: ")
     hr.delete_from_file(id)
 

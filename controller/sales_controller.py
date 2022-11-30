@@ -9,6 +9,8 @@ def list_transactions():
 
 
 def add_transaction():
+    # Unique ID should be generated from sales.util.generate_id
+    # New transaction should have float price
     sales_database = sales.data_manager.read_table_from_file(sales.DATAFILE)
     new_transaction = view.get_inputs(sales.HEADERS)
     sales_database.append(new_transaction)
@@ -34,12 +36,13 @@ def update_transaction():
 
 
 def delete_transaction():
+    # Doesn't find id
     sales_database = sales.data_manager.read_table_from_file(sales.DATAFILE)
     deleted_transaction = view.get_input(
         "Select ID of a transaction to delete")
     for data in sales_database:
         if deleted_transaction in data[0]:
-            sales.remove(data)
+            sales.remove(data)  # nope
             sales.data_manager.write_table_to_file(
                 sales.DATAFILE, sales_database)
             view.print_message(
@@ -49,6 +52,7 @@ def delete_transaction():
 
 
 def get_biggest_revenue_transaction():
+    # Exits sales menu
     sales_db = sales.data_manager.read_table_from_file(sales.DATAFILE)
     data = {}
     largest_transaction = 0.0
@@ -66,6 +70,7 @@ def get_biggest_revenue_transaction():
 
 
 def get_biggest_revenue_product():
+    # Exits sales menu
     sales_db = sales.data_manager.read_table_from_file(sales.DATAFILE)
     data = {}
     item_name = ""
