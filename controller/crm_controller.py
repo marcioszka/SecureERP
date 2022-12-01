@@ -9,10 +9,17 @@ def list_customers():
 
 def add_customer():
     crm_db = crm.data_manager.read_table_from_file(crm.DATAFILE)
-    user_input = view.get_inputs(crm.HEADERS)
+    unique_id = crm.util.generate_id()
+    used_ids = []
+    for person in crm_db:
+        used_ids.append(person[0])
+    while unique_id in used_ids:
+        unique_id = crm.util.generate_id()
+    user_input = view.get_inputs(crm.HEADERS[1:])
+    user_input.insert(0, unique_id)
     crm_db.append(user_input)
     crm.data_manager.write_table_to_file(crm.DATAFILE, crm_db)
-    view.print_message(f"Customer {user_input[0]} added to database!")
+    view.print_message(f"Customer {user_input[1]} added to database!")
 
 
 def update_customer():
@@ -34,9 +41,10 @@ def update_customer():
 
 def delete_customer():
     crm_db = crm.data_manager.read_table_from_file(crm.DATAFILE)
+    view.print_table(crm_db, crm.HEADERS)
     delete_id = view.get_input("Select ID of customer to remove")
     for record in crm_db:
-        if delete_id in record[0]:
+        if delete_id == record[0]:
             crm_db.remove(record)
             crm.data_manager.write_table_to_file(crm.DATAFILE, crm_db)
             view.print_message(
