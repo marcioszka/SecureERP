@@ -49,10 +49,11 @@ def delete_transaction():
     for data in sales_database:
         if deleted_transaction in data[0]:
             sales_database.remove(data)
-    sales.data_manager.write_table_to_file(
+            sales.data_manager.write_table_to_file(
                 sales.DATAFILE, sales_database)
-    view.print_message(
+            return view.print_message(
                 f"Transaction {deleted_transaction} deleted from database.")
+    view.print_error_message(f"Transaction {deleted_transaction} is not listed in a database.")
     
 
 def get_biggest_revenue_transaction():
