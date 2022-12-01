@@ -9,10 +9,16 @@ def list_transactions():
 
 
 def add_transaction():
-    # Unique ID should be generated from sales.util.generate_id
     # New transaction should have float price
     sales_database = sales.data_manager.read_table_from_file(sales.DATAFILE)
-    new_transaction = view.get_inputs(sales.HEADERS)
+    used_transaction_id = []
+    for sale in sales_database:
+        used_transaction_id.append(sale[0])
+    new_transaction_id = sales.util.generate_id()
+    while new_transaction_id in used_transaction_id:
+        new_transaction_id = sales.util.generate_id()
+    new_transaction = view.get_inputs(sales.HEADERS[1:])
+    new_transaction.insert(0, new_transaction_id)
     sales_database.append(new_transaction)
     sales.data_manager.write_table_to_file(sales.DATAFILE, sales_database)
     view.print_message(f"Transaction {new_transaction[0]} added to database!")
@@ -41,8 +47,8 @@ def delete_transaction():
     deleted_transaction = view.get_input(
         "Select ID of a transaction to delete")
     for data in sales_database:
-        if deleted_transaction in data[0]:
-            sales.remove(data)  # nope
+        if deleted_transaction == data[0]:
+            sales_database.remove(data)  # nope
             sales.data_manager.write_table_to_file(
                 sales.DATAFILE, sales_database)
             view.print_message(

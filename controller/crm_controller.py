@@ -23,7 +23,6 @@ def add_customer():
 
 
 def update_customer():
-    # Replaces whole database with single person
     crm_database = crm.data_manager.read_table_from_file(crm.DATAFILE)
     id_customer_to_update = view.get_input(
         "Select an ID of a customer to update.")
@@ -34,7 +33,7 @@ def update_customer():
             updated_data = updated_customer
         else:
             updated_data = data
-    updated_crm.append(updated_data)
+        updated_crm.append(updated_data)
     crm.data_manager.write_table_to_file(crm.DATAFILE, updated_crm)
     view.print_message(
         f"Details of customer #{id_customer_to_update} have been updated.")
