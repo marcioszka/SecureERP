@@ -2,41 +2,41 @@ from model.hr import hr
 from view import terminal as view
 from datetime import timedelta, date
 
-
 def list_employees():
-    # Crashes app
-    person = hr.read_from_file()  # wrong function call location
-    view.print_table(person)
-
+    hr_db = hr.data_manager.read_table_from_file(hr.DATAFILE)
+    view.print_table(hr_db, hr.HEADERS)
 
 def add_employee():
-    # Crashes app
-    # Unique ID should be generated from sales.util.generate_id
-    unique_id = view.get_input("Please provide the ID: ")
-    person = view.get_input("Please provide the name: ")
-    birthdays = view.get_input("Please provide birthday date: ")
-    department = view.get_input("Please provide the department: ")
-    clearance = view.get_input("Please provide the clearance: ")
-    hr.create_file(unique_id, person, birthdays, department, clearance)
+    hr_db = hr.data_manager.read_table_from_file(hr.DATAFILE)
+    new_employee = view.get_inputs(hr.HEADERS)
+    hr_db.append(new_employee)
+    hr_db.data_manager.write_table_to_file(hr.DATAFILE, hr_db)
+    view.print_message(f"New employee {new_employee[0]} has been added to the database")
 
-
-def update_employee():
-    # Crashes app
-    # Unique ID should be generated from sales.util.generate_id
-    id = view.get_inputs("Please provide the ID: ")
-    person = view.get_input("Please provide the name: ")
-    birthdays = view.get_input("Please provide birthday date: ")
-    department = view.get_input("Please provide the department: ")
-    clearance = view.get_input("Please provide the clearance: ")
-    hr.update_file(id, person, birthdays, department, clearance)
-
+def update_employee():    
+    hr_db = hr.data_manager.read_table_from_file(hr.DATAFILE)
+    id_employee_to_update = view.get_input("Select ID of a employee to update")
+    updated_employee = []
+    for data in hr_db:
+        if data[0] == id_employee_to_update:
+            updated_detail = view.get_inputs(hr.HEADERS)
+            updated_data = updated_detail
+        else:
+            updated_data = data
+        updated_employee.append(updated_data)
+    hr.data_manager.write_table_to_file(hr.DATAFILE, updated_employee)
+    view.print_message(f"Employee {id_employee_to_update} has been updated.")
 
 def delete_employee():
-    # Crashes app
-    # Unique ID should be generated from sales.util.generate_id
-    id = view.get_input("Please provide ID to remove permanently: ")
-    hr.delete_from_file(id)
-
+    hr_db = hr.data_manager.read_table_from_file(hr.DATAFILE)
+    deleted_employee = view.get_input("Select ID of a employee to delete")
+    for data in hr_db:
+        if  deleted_employee in data[0]:
+            hr.remove(data)
+            hr.data_manager.write_table_to_file(hr.DATAFILE, hr_db)
+            view.print_message(f"Employee {deleted_employee} has been deleted from database")
+        else:
+            return view.print_error_message(f"Employee {deleted_employee} is not listed in a database.")
 
 def get_oldest_and_youngest():
     hr_database = hr.data_manager.read_table_from_file(hr.DATAFILE)
