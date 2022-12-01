@@ -16,7 +16,20 @@ def add_customer():
 
 
 def update_customer():
-    view.print_error_message("Not implemented yet.")
+    crm_database = crm.data_manager.read_table_from_file(crm.DATAFILE)
+    id_customer_to_update = view.get_input(
+        "Select an ID of a customer to update.")
+    updated_crm = []
+    for data in crm_database:
+        if data[0] == id_customer_to_update:
+            updated_customer = view.get_inputs(crm.HEADERS)
+            updated_data = updated_customer
+        else:
+            updated_data = data
+        updated_crm.append(updated_data)
+    crm.data_manager.write_table_to_file(crm.DATAFILE, updated_crm)
+    view.print_message(
+        f"Details of customer #{id_customer_to_update} have been updated.")
 
 
 def delete_customer():
