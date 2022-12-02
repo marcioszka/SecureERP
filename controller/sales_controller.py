@@ -9,7 +9,6 @@ def list_transactions():
 
 
 def add_transaction():
-    # New transaction should have float price
     sales_database = sales.data_manager.read_table_from_file(sales.DATAFILE)
     used_transaction_id = []
     for sale in sales_database:
@@ -42,20 +41,20 @@ def update_transaction():
 
 
 def delete_transaction():
-    # Doesn't find id
     sales_database = sales.data_manager.read_table_from_file(sales.DATAFILE)
     deleted_transaction = view.get_input(
         "Select ID of a transaction to delete")
+    #if deleted_transaction not in sales_database:
+    #    view.print_error_message(f"Transaction {deleted_transaction} is not listed in a database.")
     for data in sales_database:
-        if deleted_transaction == data[0]:
-            sales_database.remove(data)  # nope
+        if deleted_transaction in data[0]:
+            sales_database.remove(data)
             sales.data_manager.write_table_to_file(
                 sales.DATAFILE, sales_database)
-            view.print_message(
+            return view.print_message(
                 f"Transaction {deleted_transaction} deleted from database.")
-        else:
-            return view.print_error_message(f"Transaction {deleted_transaction} is not listed in a database.")
-
+    view.print_error_message(f"Transaction {deleted_transaction} is not listed in a database.")
+    
 
 def get_biggest_revenue_transaction():
     # Exits sales menu
