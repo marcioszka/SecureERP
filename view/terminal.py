@@ -13,7 +13,6 @@ def print_message(message):
 
 
 def print_general_results(result, label):
-    # Try to make non-floats as int
     print(label)
     if isinstance(result, dict):
         for key, value in result.items():
@@ -39,7 +38,6 @@ def print_general_results(result, label):
 
 
 def print_table(table, headers):
-    # Adds headers to database
     row_length = 0
     longest_string = []
     table_copy = [record for record in table]

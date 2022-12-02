@@ -2,18 +2,22 @@ from model.hr import hr
 from view import terminal as view
 from datetime import timedelta, date
 
+
 def list_employees():
     hr_db = hr.data_manager.read_table_from_file(hr.DATAFILE)
     view.print_table(hr_db, hr.HEADERS)
+
 
 def add_employee():
     hr_db = hr.data_manager.read_table_from_file(hr.DATAFILE)
     new_employee = view.get_inputs(hr.HEADERS)
     hr_db.append(new_employee)
     hr_db.data_manager.write_table_to_file(hr.DATAFILE, hr_db)
-    view.print_message(f"New employee {new_employee[0]} has been added to the database")
+    view.print_message(
+        f"New employee {new_employee[0]} has been added to the database")
 
-def update_employee():    
+
+def update_employee():
     hr_db = hr.data_manager.read_table_from_file(hr.DATAFILE)
     id_employee_to_update = view.get_input("Select ID of a employee to update")
     updated_employee = []
@@ -27,16 +31,19 @@ def update_employee():
     hr.data_manager.write_table_to_file(hr.DATAFILE, updated_employee)
     view.print_message(f"Employee {id_employee_to_update} has been updated.")
 
+
 def delete_employee():
     hr_db = hr.data_manager.read_table_from_file(hr.DATAFILE)
     deleted_employee = view.get_input("Select ID of a employee to delete")
     for data in hr_db:
-        if  deleted_employee in data[0]:
+        if deleted_employee in data[0]:
             hr.remove(data)
             hr.data_manager.write_table_to_file(hr.DATAFILE, hr_db)
-            view.print_message(f"Employee {deleted_employee} has been deleted from database")
+            view.print_message(
+                f"Employee {deleted_employee} has been deleted from database")
         else:
             return view.print_error_message(f"Employee {deleted_employee} is not listed in a database.")
+
 
 def get_oldest_and_youngest():
     hr_database = hr.data_manager.read_table_from_file(hr.DATAFILE)
