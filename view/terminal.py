@@ -13,7 +13,6 @@ def print_message(message):
 
 
 def print_general_results(result, label):
-    # Try to make non-floats as int
     print(label)
     if isinstance(result, dict):
         for key, value in result.items():
@@ -39,13 +38,13 @@ def print_general_results(result, label):
 
 
 def print_table(table, headers):
-    # Adds headers to database
     row_length = 0
     longest_string = []
-    table.insert(0, headers)
+    table_copy = [record for record in table]
+    table_copy.insert(0, headers)
     for _ in headers:
         longest_string.append("")
-    for person in table:
+    for person in table_copy:
         i = 0
         for item in person:
             temp_string = f"{' ':<2}{item}{' ':>2}"
@@ -54,7 +53,7 @@ def print_table(table, headers):
             i += 1
     row_length = len('  '.join(longest_string)) + 1
     print(f"/{'-' * (row_length)}\\")
-    for person in table:
+    for person in table_copy:
         print("|", end="")
         i = 0
         for item in person:
@@ -70,7 +69,7 @@ def print_table(table, headers):
             print("|", end="")
             i += 1
         print()
-        if person != table[-1]:
+        if person != table_copy[-1]:
             print(f"|{'-' * (row_length)}|")
         else:
             print(f"\\{'-' * (row_length)}/")

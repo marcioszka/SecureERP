@@ -41,12 +41,11 @@ def update_customer():
 
 
 def delete_customer():
-    # Doesn't find id
     crm_db = crm.get_table()
     view.print_table(crm_db, crm.HEADERS)
     delete_id = view.get_input("Select ID of customer to remove")
     for record in crm_db:
-        if delete_id in record[0]:
+        if delete_id == record[0]:
             crm_db.remove(record)
             crm.write_file(crm_db)
             view.print_message(
