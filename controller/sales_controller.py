@@ -10,7 +10,14 @@ def list_transactions():
 
 def add_transaction():
     sales_database = sales.data_manager.read_table_from_file(sales.DATAFILE)
-    new_transaction = view.get_inputs(sales.HEADERS)
+    used_transaction_id = []
+    for sale in sales_database:
+        used_transaction_id.append(sale[0])
+    new_transaction_id = sales.util.generate_id()
+    while new_transaction_id in used_transaction_id:
+        new_transaction_id = sales.util.generate_id()
+    new_transaction = view.get_inputs(sales.HEADERS[1:])
+    new_transaction.insert(0, new_transaction_id)
     sales_database.append(new_transaction)
     sales.data_manager.write_table_to_file(sales.DATAFILE, sales_database)
     view.print_message(f"Transaction {new_transaction[0]} added to database!")
@@ -18,29 +25,35 @@ def add_transaction():
 
 def update_transaction():
     sales_database = sales.data_manager.read_table_from_file(sales.DATAFILE)
-    id_transaction_to_update = view.get_input("Select ID of a transaction to update")
+    id_transaction_to_update = view.get_input(
+        "Select ID of a transaction to update")
     updated_sales = []
     for data in sales_database:
         if data[0] == id_transaction_to_update:
-            updated_detail = view.get_inputs(sales.HEADERS)
+            updated_detail = view.get_inputs(sales.HEADERS[1:])
             updated_data = updated_detail
+            updated_data.insert(0, id_transaction_to_update)
         else:
             updated_data = data
         updated_sales.append(updated_data)
     sales.data_manager.write_table_to_file(sales.DATAFILE, updated_sales)
-    view.print_message(f"Transaction {id_transaction_to_update} has been updated.")
+    view.print_message(
+        f"Transaction {id_transaction_to_update} has been updated.")
 
 
 def delete_transaction():
     sales_database = sales.data_manager.read_table_from_file(sales.DATAFILE)
-    deleted_transaction = view.get_input("Select ID of a transaction to delete")
+    deleted_transaction = view.get_input(
+        "Select ID of a transaction to delete")
     for data in sales_database:
         if deleted_transaction in data[0]:
-            sales.remove(data)
-            sales.data_manager.write_table_to_file(sales.DATAFILE, sales_database)
-            view.print_message(f"Transaction {deleted_transaction} deleted from database.")
-        else:
-            return view.print_error_message(f"Transaction {deleted_transaction} is not listed in a database.")
+            sales_database.remove(data)
+            sales.data_manager.write_table_to_file(
+                sales.DATAFILE, sales_database)
+            return view.print_message(
+                f"Transaction {deleted_transaction} deleted from database.")
+    view.print_error_message(
+        f"Transaction {deleted_transaction} is not listed in a database.")
 
 
 def get_biggest_revenue_transaction():
@@ -78,19 +91,24 @@ def get_biggest_revenue_product():
 
 
 def count_transactions_between():
-    starting_date = view.get_input("Enter a starting date in YYYY-MM-DD format with which database is searched.")
-    ending_date = view.get_input("Enter an ending date in YYYY-MM-DD format with which database is searched.")
+    starting_date = view.get_input(
+        "Enter a starting date in YYYY-MM-DD format with which database is searched.")
+    ending_date = view.get_input(
+        "Enter an ending date in YYYY-MM-DD format with which database is searched.")
     transaction_counter = 0
     sales_database = sales.data_manager.read_table_from_file(sales.DATAFILE)
     for data in sales_database:
         if data[4] >= starting_date and data[4] <= ending_date:
             transaction_counter += 1
     if transaction_counter == 0:
-        view.print_message(f"There have been no transactions between {starting_date} and {ending_date}.")
+        view.print_message(
+            f"There have been no transactions between {starting_date} and {ending_date}.")
     elif transaction_counter == 1:
-        view.print_message(f"There has been {transaction_counter} transaction between {starting_date} and {ending_date}.")
+        view.print_message(
+            f"There has been {transaction_counter} transaction between {starting_date} and {ending_date}.")
     else:
-        view.print_message(f"There have been {transaction_counter} transactions between {starting_date} and {ending_date}.")
+        view.print_message(
+            f"There have been {transaction_counter} transactions between {starting_date} and {ending_date}.")
 
 
 def sum_transactions_between():
@@ -114,7 +132,7 @@ def sum_transactions_between():
         if transaction[4] in dates:
             transaction_sum += float(transaction[3])
     view.print_general_results(
-        transaction_sum, f"Sum of transactions between {start_date} - {end_date}")
+        transaction_sum, f"Sum of transactions between {start_date} - {end_date}:")
 
 
 def run_operation(option):
