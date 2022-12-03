@@ -16,6 +16,7 @@ def add_customer():
     while unique_id in used_ids:
         unique_id = crm.util.generate_id()
     user_input = view.get_inputs(crm.HEADERS[1:])
+    # new_user = unique_id + user_input
     user_input.insert(0, unique_id)
     crm_db.append(user_input)
     crm.data_manager.write_table_to_file(crm.DATAFILE, crm_db)
