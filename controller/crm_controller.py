@@ -29,8 +29,9 @@ def update_customer():
     updated_crm = []
     for data in crm_database:
         if data[0] == id_customer_to_update:
-            updated_customer = view.get_inputs(crm.HEADERS)
+            updated_customer = view.get_inputs(crm.HEADERS[1:])
             updated_data = updated_customer
+            updated_data.insert(0, id_customer_to_update)
         else:
             updated_data = data
         updated_crm.append(updated_data)
