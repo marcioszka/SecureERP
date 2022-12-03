@@ -4,12 +4,12 @@ from datetime import date, timedelta
 
 
 def list_transactions():
-    sales_database = sales.data_manager.read_table_from_file(sales.DATAFILE)
+    sales_database = sales.get_table()
     view.print_table(sales_database, sales.HEADERS)
 
 
 def add_transaction():
-    sales_database = sales.data_manager.read_table_from_file(sales.DATAFILE)
+    sales_database = sales.get_table()
     used_transaction_id = []
     for sale in sales_database:
         used_transaction_id.append(sale[0])
@@ -19,36 +19,36 @@ def add_transaction():
     new_transaction = view.get_inputs(sales.HEADERS[1:])
     new_transaction.insert(0, new_transaction_id)
     sales_database.append(new_transaction)
-    sales.data_manager.write_table_to_file(sales.DATAFILE, sales_database)
+    sales.write_file(sales_database)
     view.print_message(f"Transaction {new_transaction[0]} added to database!")
 
 
 def update_transaction():
-    sales_database = sales.data_manager.read_table_from_file(sales.DATAFILE)
+    sales_database = sales.get_table()
     id_transaction_to_update = view.get_input(
         "Select ID of a transaction to update")
     updated_sales = []
     for data in sales_database:
         if data[0] == id_transaction_to_update:
-            updated_detail = view.get_inputs(sales.HEADERS)
+            updated_detail = view.get_inputs(sales.HEADERS[1:])
             updated_data = updated_detail
+            updated_data.insert(0, id_transaction_to_update)
         else:
             updated_data = data
         updated_sales.append(updated_data)
-    sales.data_manager.write_table_to_file(sales.DATAFILE, updated_sales)
+    sales.write_file(sales_database)
     view.print_message(
         f"Transaction {id_transaction_to_update} has been updated.")
 
 
 def delete_transaction():
-    sales_database = sales.data_manager.read_table_from_file(sales.DATAFILE)
+    sales_database = sales.get_table()
     deleted_transaction = view.get_input(
         "Select ID of a transaction to delete")
     for data in sales_database:
         if deleted_transaction in data[0]:
             sales_database.remove(data)
-            sales.data_manager.write_table_to_file(
-                sales.DATAFILE, sales_database)
+            sales.write_file(sales_database)
             return view.print_message(
                 f"Transaction {deleted_transaction} deleted from database.")
     view.print_error_message(
@@ -56,7 +56,7 @@ def delete_transaction():
 
 
 def get_biggest_revenue_transaction():
-    sales_db = sales.data_manager.read_table_from_file(sales.DATAFILE)
+    sales_db = sales.get_table()
     data = {}
     largest_transaction = 0.0
     data_list = [[]]
@@ -73,7 +73,7 @@ def get_biggest_revenue_transaction():
 
 
 def get_biggest_revenue_product():
-    sales_db = sales.data_manager.read_table_from_file(sales.DATAFILE)
+    sales_db = sales.get_table()
     data = {}
     item_name = ""
     sales_sum = 0.0
@@ -95,7 +95,7 @@ def count_transactions_between():
     ending_date = view.get_input(
         "Enter an ending date in YYYY-MM-DD format with which database is searched.")
     transaction_counter = 0
-    sales_database = sales.data_manager.read_table_from_file(sales.DATAFILE)
+    sales_database = sales.get_table()
     for data in sales_database:
         if data[4] >= starting_date and data[4] <= ending_date:
             transaction_counter += 1
@@ -120,7 +120,7 @@ def sum_transactions_between():
             day = start_date + timedelta(iso_date)
             dates_list.append(day.strftime('%Y-%m-%d'))
         return dates_list
-    sales_db = sales.data_manager.read_table_from_file(sales.DATAFILE)
+    sales_db = sales.get_table()
     year_from, month_from, day_from = start_date.split("-")
     year_to, month_to, day_to = end_date.split("-")
     from_date = date(int(year_from), int(month_from), int(day_from))
