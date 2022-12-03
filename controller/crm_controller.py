@@ -3,12 +3,12 @@ from view import terminal as view
 
 
 def list_customers():
-    crm_db = crm.data_manager.read_table_from_file(crm.DATAFILE)
+    crm_db = crm.get_table()
     view.print_table(crm_db, crm.HEADERS)
 
 
 def add_customer():
-    crm_db = crm.data_manager.read_table_from_file(crm.DATAFILE)
+    crm_db = crm.get_table()
     unique_id = crm.util.generate_id()
     used_ids = []
     for person in crm_db:
@@ -18,35 +18,36 @@ def add_customer():
     user_input = view.get_inputs(crm.HEADERS[1:])
     user_input.insert(0, unique_id)
     crm_db.append(user_input)
-    crm.data_manager.write_table_to_file(crm.DATAFILE, crm_db)
+    crm.write_file(crm_db)
     view.print_message(f"Customer {user_input[1]} added to database!")
 
 
 def update_customer():
-    crm_database = crm.data_manager.read_table_from_file(crm.DATAFILE)
+    crm_database = crm.get_table()
     id_customer_to_update = view.get_input(
         "Select an ID of a customer to update.")
     updated_crm = []
     for data in crm_database:
         if data[0] == id_customer_to_update:
-            updated_customer = view.get_inputs(crm.HEADERS)
+            updated_customer = view.get_inputs(crm.HEADERS[1:])
             updated_data = updated_customer
+            updated_data.insert(0, id_customer_to_update)
         else:
             updated_data = data
         updated_crm.append(updated_data)
-    crm.data_manager.write_table_to_file(crm.DATAFILE, updated_crm)
+    crm.write_file(updated_crm)
     view.print_message(
         f"Details of customer #{id_customer_to_update} have been updated.")
 
 
 def delete_customer():
-    crm_db = crm.data_manager.read_table_from_file(crm.DATAFILE)
+    crm_db = crm.get_table()
     view.print_table(crm_db, crm.HEADERS)
     delete_id = view.get_input("Select ID of customer to remove")
     for record in crm_db:
         if delete_id == record[0]:
             crm_db.remove(record)
-            crm.data_manager.write_table_to_file(crm.DATAFILE, crm_db)
+            crm.write_file(crm_db)
             view.print_message(
                 f"Customer with ID {delete_id} has been removed!")
             return
@@ -55,7 +56,7 @@ def delete_customer():
 
 
 def get_subscribed_emails():
-    crm_db = crm.data_manager.read_table_from_file(crm.DATAFILE)
+    crm_db = crm.get_table()
     email_list = []
     for client in crm_db:
         if client[3] == "1":
