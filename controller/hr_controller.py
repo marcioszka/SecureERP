@@ -17,6 +17,7 @@ def add_employee():
     while new_employee_id in used_employee_id:
         new_employee_id = hr.util.generate_id()
     new_employee = view.get_inputs(hr.HEADERS[1:])
+    new_employee.insert(0, new_employee_id)
     hr_db.append(new_employee)
     hr.write_file(hr_db)
     view.print_message(
@@ -29,7 +30,7 @@ def update_employee():
     updated_employee = []
     for data in hr_db:
         if data[0] == id_employee_to_update:
-            updated_detail = view.get_inputs(hr.HEADERS)
+            updated_detail = view.get_inputs(hr.HEADERS[1:])
             updated_data = updated_detail
         else:
             updated_data = data
@@ -42,7 +43,7 @@ def delete_employee():
     hr_db = hr.get_table()
     deleted_employee = view.get_input("Select ID of a employee to delete")
     for data in hr_db:
-        if deleted_employee in data[0]:
+        if deleted_employee == data[0]:
             hr.remove(data)
             hr.write_file(hr_db)
             view.print_message(
