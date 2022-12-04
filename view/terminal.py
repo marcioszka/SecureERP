@@ -85,7 +85,7 @@ def get_input(label):
 def get_inputs(labels):
     user_input = []
     for label in labels:
-        user_input.append(get_input(label) + ":\n")
+        user_input.append(get_input(label + ":"))
     return user_input
 
 

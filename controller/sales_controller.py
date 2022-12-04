@@ -36,7 +36,7 @@ def update_transaction():
             updated_sales.append(updated_data)
         else:
             updated_sales.append(data)
-    sales.write_file(sales_database)
+    sales.write_file(updated_sales)
     view.print_message(
         f"Transaction {id_transaction_to_update} has been updated.")
 

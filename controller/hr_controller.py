@@ -10,7 +10,13 @@ def list_employees():
 
 def add_employee():
     hr_db = hr.get_table()
-    new_employee = view.get_inputs(hr.HEADERS)
+    used_employee_id = []
+    for employee in hr_db:
+        used_employee_id.append(employee[0])
+    new_employee_id = hr.util.generate_id()
+    while new_employee_id in used_employee_id:
+        new_employee_id = hr.util.generate_id()
+    new_employee = view.get_inputs(hr.HEADERS[1:])
     hr_db.append(new_employee)
     hr.write_file(hr_db)
     view.print_message(
