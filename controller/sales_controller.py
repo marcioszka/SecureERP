@@ -33,9 +33,9 @@ def update_transaction():
             updated_detail = view.get_inputs(sales.HEADERS[1:])
             updated_data = updated_detail
             updated_data.insert(0, id_transaction_to_update)
+            updated_sales.append(updated_data)
         else:
-            updated_data = data
-        updated_sales.append(updated_data)
+            updated_sales.append(data)
     sales.write_file(sales_database)
     view.print_message(
         f"Transaction {id_transaction_to_update} has been updated.")
