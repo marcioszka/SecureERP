@@ -4,21 +4,21 @@ from datetime import timedelta, date
 
 
 def list_employees():
-    hr_db = hr.data_manager.read_table_from_file(hr.DATAFILE)
+    hr_db = hr.get_table()
     view.print_table(hr_db, hr.HEADERS)
 
 
 def add_employee():
-    hr_db = hr.data_manager.read_table_from_file(hr.DATAFILE)
+    hr_db = hr.get_table()
     new_employee = view.get_inputs(hr.HEADERS)
     hr_db.append(new_employee)
-    hr_db.data_manager.write_table_to_file(hr.DATAFILE, hr_db)
+    hr.write_file(hr_db)
     view.print_message(
         f"New employee {new_employee[0]} has been added to the database")
 
 
 def update_employee():
-    hr_db = hr.data_manager.read_table_from_file(hr.DATAFILE)
+    hr_db = hr.get_table()
     id_employee_to_update = view.get_input("Select ID of a employee to update")
     updated_employee = []
     for data in hr_db:
@@ -28,17 +28,17 @@ def update_employee():
         else:
             updated_data = data
         updated_employee.append(updated_data)
-    hr.data_manager.write_table_to_file(hr.DATAFILE, updated_employee)
+    hr.write_file(updated_employee)
     view.print_message(f"Employee {id_employee_to_update} has been updated.")
 
 
 def delete_employee():
-    hr_db = hr.data_manager.read_table_from_file(hr.DATAFILE)
+    hr_db = hr.get_table()
     deleted_employee = view.get_input("Select ID of a employee to delete")
     for data in hr_db:
         if deleted_employee in data[0]:
             hr.remove(data)
-            hr.data_manager.write_table_to_file(hr.DATAFILE, hr_db)
+            hr.write_file(hr_db)
             view.print_message(
                 f"Employee {deleted_employee} has been deleted from database")
         else:
@@ -46,7 +46,7 @@ def delete_employee():
 
 
 def get_oldest_and_youngest():
-    hr_database = hr.data_manager.read_table_from_file(hr.DATAFILE)
+    hr_database = hr.get_table()
     birthday_of_youngest, birthday_of_oldest = hr_database[0][2], hr_database[0][2]
     oldest_employee_name, youngest_employee_name = hr_database[0][1], hr_database[0][1]
     for data in hr_database:
@@ -62,7 +62,7 @@ def get_oldest_and_youngest():
 
 
 def get_average_age():
-    hr_db = hr.data_manager.read_table_from_file(hr.DATAFILE)
+    hr_db = hr.get_table()
     ages = []
     today = date.today()
     for person in hr_db:
@@ -78,7 +78,7 @@ def get_average_age():
 
 
 def next_birthdays():
-    hr_db = hr.data_manager.read_table_from_file(hr.DATAFILE)
+    hr_db = hr.get_table()
     birthdays = []
     dates = []
     date_from = date.today()
@@ -96,7 +96,7 @@ def next_birthdays():
 
 
 def count_employees_with_clearance():
-    hr_db = hr.data_manager.read_table_from_file(hr.DATAFILE)
+    hr_db = hr.get_table()
     clearance_count = {}
     for record in hr_db:
         try:
@@ -108,7 +108,7 @@ def count_employees_with_clearance():
 
 
 def count_employees_per_department():
-    hr_db = hr.data_manager.read_table_from_file(hr.DATAFILE)
+    hr_db = hr.get_table()
     department_count = {}
     for record in hr_db:
         try:
